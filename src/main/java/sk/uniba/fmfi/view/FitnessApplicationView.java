@@ -17,21 +17,27 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import sk.uniba.fmfi.data.JsonDataService;
-import sk.uniba.fmfi.data.Record;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sk.uniba.fmfi.controller.OpenCreateRecordView;
+import sk.uniba.fmfi.model.Database;
+import sk.uniba.fmfi.model.BodyRecord;
+
+import java.io.IOException;
 
 public class FitnessApplicationView extends Application {
 
     private static final String IMAGES_PATH = "file:src/main/resources/images/";
     private static final String TEXT_FONT = "Tahoma";
-
-    JsonDataService jsonDataService = new JsonDataService();
+    private static final Logger LOGGER = LoggerFactory.getLogger(FitnessApplicationView.class);
 
 	public static void main(String[] args) {
 		launch(args);
 	}
 	
     public void start(Stage primaryStage) {
+        Database database = new Database();
+
 		primaryStage.setTitle("Fitness aplikácia");
 		primaryStage.getIcons().add(new Image(IMAGES_PATH + "application-logo.png"));
 
@@ -53,6 +59,7 @@ public class FitnessApplicationView extends Application {
         createRecordButton.setGraphic(new ImageView(createRecordImage));
         createRecordButton.setMinWidth(250);
         createRecordButton.setFont(Font.font(TEXT_FONT, FontWeight.BOLD, 15));
+        createRecordButton.setOnAction(new OpenCreateRecordView(database));
 
         Image showStatisticsImage = new Image(IMAGES_PATH + "show-statistics.png");
         Button showStatisticsButton = new Button("Štatistický prehľad");
@@ -73,43 +80,47 @@ public class FitnessApplicationView extends Application {
         recordTableTitle.setFont(Font.font(TEXT_FONT, FontWeight.NORMAL, 18));
         grid.add(recordTableTitle, 1, 5);
 
-        TableView<Record> recordTableView = new TableView<>();
+        TableView<BodyRecord> recordTableView = new TableView<>();
 
-        TableColumn<Record,Float> weightColumn = new TableColumn<>("Váha");
+        TableColumn<BodyRecord,Float> dateColumn = new TableColumn<>("Dátum");
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        dateColumn.prefWidthProperty().bind(recordTableView.widthProperty().multiply(0.17));
+        dateColumn.setResizable(false);
+
+        TableColumn<BodyRecord,Float> weightColumn = new TableColumn<>("Váha");
         weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));
         weightColumn.prefWidthProperty().bind(recordTableView.widthProperty().multiply(0.15));
         weightColumn.setResizable(false);
 
-        TableColumn<Record,Float> heightColumn = new TableColumn<>("Výška");
-        heightColumn.setCellValueFactory(new PropertyValueFactory<>("height"));
-        heightColumn.prefWidthProperty().bind(recordTableView.widthProperty().multiply(0.17));
-        heightColumn.setResizable(false);
-
-        TableColumn<Record,Float> armColumn = new TableColumn<>("Obvod bicepsu");
+        TableColumn<BodyRecord,Float> armColumn = new TableColumn<>("Obvod bicepsu");
         armColumn.setCellValueFactory(new PropertyValueFactory<>("arm"));
         armColumn.prefWidthProperty().bind(recordTableView.widthProperty().multiply(0.17));
         armColumn.setResizable(false);
 
-        TableColumn<Record,Float> neckColumn = new TableColumn<>("Obvod krku");
+        TableColumn<BodyRecord,Float> neckColumn = new TableColumn<>("Obvod krku");
         neckColumn.setCellValueFactory(new PropertyValueFactory<>("neck"));
         neckColumn.prefWidthProperty().bind(recordTableView.widthProperty().multiply(0.17));
         neckColumn.setResizable(false);
 
-        TableColumn<Record,Float> waistColumn = new TableColumn<>("Pás");
+        TableColumn<BodyRecord,Float> waistColumn = new TableColumn<>("Pás");
         waistColumn.setCellValueFactory(new PropertyValueFactory<>("waist"));
         waistColumn.prefWidthProperty().bind(recordTableView.widthProperty().multiply(0.17));
         waistColumn.setResizable(false);
 
-        TableColumn<Record,Float> hipColumn = new TableColumn<>("Boky");
+        TableColumn<BodyRecord,Float> hipColumn = new TableColumn<>("Boky");
         hipColumn.setCellValueFactory(new PropertyValueFactory<>("hip"));
         hipColumn.prefWidthProperty().bind(recordTableView.widthProperty().multiply(0.17));
         hipColumn.setResizable(false);
 
-        recordTableView.getColumns().addAll(weightColumn, heightColumn, armColumn, neckColumn, waistColumn, hipColumn);
-        recordTableView.setItems(jsonDataService.getRecords());
-        recordTableView.setMinWidth(600);
-        recordTableView.setMaxHeight(180);
-        grid.add(recordTableView, 1, 6);
+        try {
+            recordTableView.getColumns().addAll(dateColumn, weightColumn, armColumn, neckColumn, waistColumn, hipColumn);
+            recordTableView.setItems(database.getRecords());
+            recordTableView.setMinWidth(600);
+            recordTableView.setMaxHeight(180);
+            grid.add(recordTableView, 1, 6);
+        } catch (IOException e) {
+            LOGGER.error("Failed to load dataset: {}", e.getMessage());
+        }
 
         Scene scene = new Scene(grid);
         primaryStage.setScene(scene);
