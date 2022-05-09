@@ -35,6 +35,7 @@ public class Database {
         if (fileName == null || fileName.isEmpty()) {
             this.databaseFileName = "data.json";
         }
+
     }
 
     public String saveRecord(BodyRecord bodyRecord) {

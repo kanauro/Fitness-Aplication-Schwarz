@@ -17,8 +17,8 @@ public class StatisticsDataController {
             case "fat":
                 List<Float> fatValues = userInfo.getBodyRecords().stream().map(BodyRecord::getFat).collect(Collectors.toList());
                 return prepareChartData(fatValues);
-            case "muscle":
-                List<Float> muscleValues = userInfo.getBodyRecords().stream().map(BodyRecord::getMuscle).collect(Collectors.toList());
+            case "leanMass":
+                List<Float> muscleValues = userInfo.getBodyRecords().stream().map(BodyRecord::getLeanMass).collect(Collectors.toList());
                 return prepareChartData(muscleValues);
             case "weight":
                 List<Float> weightValues = userInfo.getBodyRecords().stream().map(BodyRecord::getWeight).collect(Collectors.toList());

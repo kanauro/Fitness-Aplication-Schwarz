@@ -17,12 +17,11 @@ public class BodyRecord {
     @JsonProperty("date") String date;
     @JsonProperty("weight") float weight;
     @JsonProperty("height") float height;
+    @JsonProperty("BMI") float bmi;
     @JsonProperty("arm") float arm;
     @JsonProperty("neck") float neck;
     @JsonProperty("waist") float waist;
     @JsonProperty("hip") float hip;
     @JsonProperty("fat") float fat;
-    @JsonProperty("muscle") float muscle;
-    @JsonProperty("water") float water;
-    @JsonProperty("bones") float bones;
+    @JsonProperty("leanMass") float leanMass;
 }

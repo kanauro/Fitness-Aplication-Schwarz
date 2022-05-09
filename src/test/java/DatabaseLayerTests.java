@@ -72,8 +72,8 @@ class DatabaseLayerTests {
         Database database = new Database(DATABASE_JSON_FILE_OK);
         database.loadUserInfo();
 
-        BodyRecord bodyRecord = new BodyRecord(1,"2022-04-13", 100, 190, 30, 41, 90,
-                90,10,10,10,10);
+        BodyRecord bodyRecord = new BodyRecord(1,"2022-04-13", 100f, 190f, 30f, 41f, 90f,
+                90f,10f,10f, 10f);
 
         Assertions.assertEquals("Success", database.saveRecord(bodyRecord));
     }
@@ -86,8 +86,8 @@ class DatabaseLayerTests {
 
         int beforeSize = database.getRecordsList().size();
 
-        BodyRecord bodyRecord = new BodyRecord(1,"2022-04-13", 100, 190, 30, 41, 90,
-                90,10,10,10,10);
+        BodyRecord bodyRecord = new BodyRecord(1,"2022-04-13", 100f, 190f, 30f, 41f, 90f,
+                90f,10f,10f, 10f);
 
         database.saveRecord(bodyRecord);
 
@@ -100,8 +100,8 @@ class DatabaseLayerTests {
         Database database = new Database(DATABASE_JSON_FILE_OK);
         database.loadUserInfo();
 
-        BodyRecord bodyRecord = new BodyRecord(1,"2022-04-13", 100, 190, 30, 41, 90,
-                90,10,10,10,10);
+        BodyRecord bodyRecord = new BodyRecord(1,"2022-04-13", 100f, 190f, 30f, 41f, 90f,
+                90f,10f,10f, 10f);
 
         database.saveRecord(bodyRecord);
 
@@ -114,8 +114,8 @@ class DatabaseLayerTests {
         Database database = new Database(DATABASE_JSON_FILE_WRONG);
         database.loadUserInfo();
 
-        BodyRecord bodyRecord = new BodyRecord(1,"2022-04-13", 100, 190, 30, 41, 90,
-                90,10,10,10,10);
+        BodyRecord bodyRecord = new BodyRecord(1,"2022-04-13", 100f, 190f, 30f, 41f, 90f,
+                90f,10f,10f, 10f);
 
         Assertions.assertEquals("Failed", database.saveRecord(bodyRecord));
     }
@@ -128,8 +128,8 @@ class DatabaseLayerTests {
 
         database.setDatabaseFileName("data_test_failure.csv");
 
-        BodyRecord bodyRecord = new BodyRecord(1,"2022-04-13", 100, 190, 30, 41, 90,
-                90,10,10,10,10);
+        BodyRecord bodyRecord = new BodyRecord(1,"2022-04-13", 100f, 190f, 30f, 41f, 90f,
+                90f,10f,10f, 10f);
 
         Assertions.assertEquals("Failed", database.saveRecord(bodyRecord));
     }
