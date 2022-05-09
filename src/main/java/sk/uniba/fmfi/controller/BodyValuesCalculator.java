@@ -15,7 +15,7 @@ public class BodyValuesCalculator {
         bodyRecord.setWater(1.5f);
     }
 
-    private float getBodyFatPercentage(BodyRecord bodyRecord) {
+    public float getBodyFatPercentage(BodyRecord bodyRecord) {
         return (float) (163.205f * Math.log(bodyRecord.getWaist() + bodyRecord.getHip() - bodyRecord.getNeck()) - 97.684f * Math.log(bodyRecord.getHeight()) - 104.912f);
     }
 

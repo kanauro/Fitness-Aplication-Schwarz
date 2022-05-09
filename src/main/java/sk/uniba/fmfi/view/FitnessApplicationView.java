@@ -17,26 +17,23 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import sk.uniba.fmfi.controller.OpenCreateRecordView;
+import sk.uniba.fmfi.controller.OpenStatisticsView;
 import sk.uniba.fmfi.model.Database;
 import sk.uniba.fmfi.model.BodyRecord;
-
-import java.io.IOException;
 
 public class FitnessApplicationView extends Application {
 
     private static final String IMAGES_PATH = "file:src/main/resources/images/";
     private static final String TEXT_FONT = "Tahoma";
-    private static final Logger LOGGER = LoggerFactory.getLogger(FitnessApplicationView.class);
 
 	public static void main(String[] args) {
 		launch(args);
 	}
 	
     public void start(Stage primaryStage) {
-        Database database = new Database();
+        Database database = new Database(null);
+        database.loadUserInfo();
 
 		primaryStage.setTitle("Fitness aplikácia");
 		primaryStage.getIcons().add(new Image(IMAGES_PATH + "application-logo.png"));
@@ -66,6 +63,7 @@ public class FitnessApplicationView extends Application {
         showStatisticsButton.setGraphic(new ImageView(showStatisticsImage));
         showStatisticsButton.setMinWidth(250);
         showStatisticsButton.setFont(Font.font(TEXT_FONT, FontWeight.BOLD, 15));
+        showStatisticsButton.setOnAction(new OpenStatisticsView(database));
 
         HBox boxFirst = new HBox();
         boxFirst.setSpacing(25);
@@ -112,15 +110,11 @@ public class FitnessApplicationView extends Application {
         hipColumn.prefWidthProperty().bind(recordTableView.widthProperty().multiply(0.17));
         hipColumn.setResizable(false);
 
-        try {
-            recordTableView.getColumns().addAll(dateColumn, weightColumn, armColumn, neckColumn, waistColumn, hipColumn);
-            recordTableView.setItems(database.getRecords());
-            recordTableView.setMinWidth(600);
-            recordTableView.setMaxHeight(180);
-            grid.add(recordTableView, 1, 6);
-        } catch (IOException e) {
-            LOGGER.error("Failed to load dataset: {}", e.getMessage());
-        }
+        recordTableView.getColumns().addAll(dateColumn, weightColumn, armColumn, neckColumn, waistColumn, hipColumn);
+        recordTableView.setItems(database.getRecordsList());
+        recordTableView.setMinWidth(600);
+        recordTableView.setMaxHeight(180);
+        grid.add(recordTableView, 1, 6);
 
         Scene scene = new Scene(grid);
         primaryStage.setScene(scene);

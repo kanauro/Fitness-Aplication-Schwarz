@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @NoArgsConstructor
-public class Dataset {
+public class UserInfo {
     @JsonProperty("name") String name;
     @JsonProperty("latestWeight") float latestWeight;
     @JsonProperty("latestHeight") float latestHeight;

@@ -15,6 +15,7 @@ import sk.uniba.fmfi.model.Database;
 public class CreateRecordView extends Stage {
 
     private static final String IMAGES_PATH = "file:src/main/resources/images/";
+    private static final String TEXT_NUMBER_REGEX = "\\d{0,3}([\\.]\\d{0,2})?";
 
     public CreateRecordView(Database database) {
         this.setTitle("Pridanie nového záznamu");
@@ -41,21 +42,52 @@ public class CreateRecordView extends Stage {
 
         TextField weightField = new TextField();
         weightField.setPromptText("Zadajte vašu aktuálnu váhu");
+        weightField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches(TEXT_NUMBER_REGEX)) {
+                weightField.setText(oldValue);
+            }
+        });
         grid.add(weightField, 1, 1);
         TextField heightField = new TextField();
         heightField.setPromptText("Zadajte vašu aktuálnu výšku");
+        heightField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches(TEXT_NUMBER_REGEX)) {
+                heightField.setText(oldValue);
+            }
+        });
         grid.add(heightField, 1, 2);
         TextField armField = new TextField();
         armField.setPromptText("Zadajte obvod bicepsu");
+        armField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches(TEXT_NUMBER_REGEX)) {
+                armField.setText(oldValue);
+            }
+        });
         grid.add(armField, 1, 3);
         TextField neckField = new TextField();
         neckField.setPromptText("Zadajte obvod krku");
+        neckField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches(TEXT_NUMBER_REGEX)) {
+                neckField.setText(oldValue);
+            }
+        });
         grid.add(neckField, 1, 4);
         TextField waistField = new TextField();
         waistField.setPromptText("Zadajte obvod pásu");
+        waistField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches(TEXT_NUMBER_REGEX)) {
+                waistField.setText(oldValue);
+            }
+        });
         grid.add(waistField, 1, 5);
         TextField hipField = new TextField();
         hipField.setPromptText("Zadajte obvod bokov");
+
+        hipField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches(TEXT_NUMBER_REGEX)) {
+                hipField.setText(oldValue);
+            }
+        });
         grid.add(hipField, 1, 6);
 
         Button createRecordButton = new Button("Vytvoriť záznam");

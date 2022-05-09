@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import sk.uniba.fmfi.model.Database;
 import sk.uniba.fmfi.model.BodyRecord;
+import sk.uniba.fmfi.view.ExceptionDialog;
 
 import java.time.LocalDate;
 
@@ -29,23 +30,32 @@ public class CreateRecordEventHandler implements EventHandler {
     @Override
     public void handle(Event event) {
 
-        database.getDataset().setLatestHeight(Float.parseFloat(heightField.getText()));
-        database.getDataset().setLatestWeight(Float.parseFloat(weightField.getText()));
+        try {
+            database.getUserInfo().setLatestHeight(Float.parseFloat(heightField.getText()));
+            database.getUserInfo().setLatestWeight(Float.parseFloat(weightField.getText()));
 
-        BodyRecord bodyRecord = BodyRecord.builder()
-                .id(database.getRecords().size() + 1)
-                .date(LocalDate.now().toString())
-                .weight(Float.parseFloat(weightField.getText()))
-                .height(Float.parseFloat(heightField.getText()))
-                .arm(Float.parseFloat(armField.getText()))
-                .hip(Float.parseFloat(hipField.getText()))
-                .waist(Float.parseFloat(waistField.getText()))
-                .neck(Float.parseFloat(neckField.getText()))
-                .build();
+            BodyRecord bodyRecord = BodyRecord.builder()
+                    .id(database.getRecordsList().size() + 1)
+                    .date(LocalDate.now().toString())
+                    .weight(Float.parseFloat(weightField.getText()))
+                    .height(Float.parseFloat(heightField.getText()))
+                    .arm(Float.parseFloat(armField.getText()))
+                    .hip(Float.parseFloat(hipField.getText()))
+                    .waist(Float.parseFloat(waistField.getText()))
+                    .neck(Float.parseFloat(neckField.getText()))
+                    .build();
 
-        bodyValuesCalculator.setBodyValues(bodyRecord);
-        database.saveRecord(bodyRecord);
+            bodyValuesCalculator.setBodyValues(bodyRecord);
 
-        stage.close();
+            if (!database.saveRecord(bodyRecord).equals("Success")) {
+                throw new IllegalStateException("Záznam sa nepodarilo úložiť do súboru.");
+            }
+
+            stage.close();
+        } catch (NumberFormatException e) {
+            new ExceptionDialog(new IllegalStateException("Nesprávne zadané údaje. Všetky polia musia býť vyplnené."));
+        } catch (IllegalStateException e) {
+            new ExceptionDialog(e);
+        }
     }
 }
