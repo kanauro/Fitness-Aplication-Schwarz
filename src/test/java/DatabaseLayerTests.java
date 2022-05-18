@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 
 class DatabaseLayerTests {
 
-    private static final String DATABASE_JSON_FILE_OK = "data_test.json";
+    private static final String DATABASE_JSON_FILE_OK = "data.json";
     private static final String DATABASE_JSON_FILE_WRONG = "123456";
 
     private UserInfo userInfo;

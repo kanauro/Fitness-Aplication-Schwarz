@@ -1,6 +1,7 @@
 package sk.uniba.fmfi.controller;
 
 import lombok.Data;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import sk.uniba.fmfi.model.BodyRecord;
 import sk.uniba.fmfi.model.UserInfo;
@@ -29,6 +30,7 @@ public class BodyValuesCalculator {
         bodyRecord.setLeanMass(getLeanMassPercentage(bodyRecord));
     }
     @SneakyThrows
+    @NonNull
     public float getBMI(BodyRecord bodyRecord) {
             if (bodyRecord.getWeight() < minWeight || bodyRecord.getWeight() > maxWeight)
                 throw new IllegalArgumentException("Please enter another value for weight");
@@ -43,14 +45,19 @@ public class BodyValuesCalculator {
      * @param bodyRecord - json record with body parameters
      * @return body fat precentage
      */
-
+    @SneakyThrows
+    @NonNull
     public float getBodyFatPercentage(BodyRecord bodyRecord) {
         List<Float> coeffs;
-        if (userInfo.getGender().equals(UserInfo.MALE)) coeffs = maleCoefficients;
-        else coeffs = femaleCoefficients;
+        String gender = userInfo.getGender();
+        if (gender == null) throw new NullPointerException("Gender is not set");
+        if (gender.equals(UserInfo.MALE)) coeffs = maleCoefficients;
+        else if (gender.equals(UserInfo.FEMALE)) coeffs = femaleCoefficients;
+        else throw new IllegalArgumentException("User info contains unknown gender");
         return (float) (495 / (coeffs.get(0) - coeffs.get(1) * Math.log10(bodyRecord.getWaist() - bodyRecord.getNeck())
                 + coeffs.get(2) * Math.log10(bodyRecord.getHeight())) - 450);
     }
+    @NonNull
     public float getLeanMassPercentage(BodyRecord bodyRecord) {
         return bodyRecord.getWeight() * (1 - getBodyFatPercentage(bodyRecord));
     }

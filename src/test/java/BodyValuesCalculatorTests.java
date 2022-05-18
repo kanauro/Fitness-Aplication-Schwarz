@@ -18,6 +18,9 @@ import static org.junit.Assert.*;
 
 public class BodyValuesCalculatorTests {
     BodyValuesCalculator calculator = new BodyValuesCalculator();
+    BodyRecord bodyRecord = new BodyRecord(1,"2022-04-13", 100f, 190f, 30f, 41f, 90f,
+            90f,10f,10f, 10f);
+
 
     @Rule
     public TestName testName = new TestName();
@@ -75,7 +78,32 @@ public class BodyValuesCalculatorTests {
                 90f,10f,10f, 10f)));
     }
 
-
+    @Test
+    public void unknownGenderTest() {
+        UserInfo userInfo = new UserInfo("Adam", 23, "mail", 80f,
+                185f, Collections.EMPTY_LIST);
+        calculator = new BodyValuesCalculator(userInfo);
+        assertThrows(IllegalArgumentException.class, () -> calculator.getBodyFatPercentage(bodyRecord));
+    }
+    @Test
+    public void userInfoWithNoArgsTest() {
+        UserInfo userInfo = new UserInfo();
+        calculator = new BodyValuesCalculator(userInfo);
+        assertThrows(NullPointerException.class, () -> calculator.getBodyFatPercentage(bodyRecord));
+    }
+    @Test
+    public void setValuesTest() {
+        UserInfo userInfo = new UserInfo("Adam", 23, "male", 80f,
+                185f, Collections.EMPTY_LIST);
+        calculator = new BodyValuesCalculator(userInfo);
+        calculator.setBodyValues(bodyRecord);
+        float bmi = calculator.getBMI(bodyRecord);
+        float fat = calculator.getBodyFatPercentage(bodyRecord);
+        float lean = calculator.getLeanMassPercentage(bodyRecord);
+        assertEquals(calculator.getBMI(bodyRecord), bmi, 0.001);
+        assertEquals(calculator.getBodyFatPercentage(bodyRecord), fat, 0.001);
+        assertEquals(calculator.getLeanMassPercentage(bodyRecord), lean, 0.001);
+    }
 
 
 }
