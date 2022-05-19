@@ -17,7 +17,7 @@ public class BodyRecord {
     @JsonProperty("date") String date;
     @JsonProperty("weight") float weight;
     @JsonProperty("height") float height;
-    @JsonProperty("BMI") float bmi;
+    @JsonProperty("bmi") float bmi;
     @JsonProperty("arm") float arm;
     @JsonProperty("neck") float neck;
     @JsonProperty("waist") float waist;

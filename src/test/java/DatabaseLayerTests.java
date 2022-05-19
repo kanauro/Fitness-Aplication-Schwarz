@@ -56,7 +56,7 @@ class DatabaseLayerTests {
         Database database = new Database(DATABASE_JSON_FILE_OK);
         database.loadUserInfo();
 
-        Assertions.assertEquals(7, database.getRecordsList().size());
+        Assertions.assertEquals(6, database.getRecordsList().size());
     }
 
     @SneakyThrows

@@ -1,8 +1,6 @@
 package sk.uniba.fmfi.controller;
 
-import lombok.Data;
-import lombok.NonNull;
-import lombok.SneakyThrows;
+import lombok.*;
 import sk.uniba.fmfi.model.BodyRecord;
 import sk.uniba.fmfi.model.UserInfo;
 
@@ -10,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BodyValuesCalculator {
     private static final float MIN_WEIGHT = 20f;
     private static final float MAX_WEIGHT = 200f;
@@ -17,26 +17,23 @@ public class BodyValuesCalculator {
     private static final float MAX_HEIGHT = 220f;
     private static final List<Float> maleCoefficients = Arrays.asList(1.0324f, 0.19077f, 0.15456f);
     private static final List<Float> femaleCoefficients = Arrays.asList(1.29579f, 0.35004f, 0.22100f);
-    UserInfo userInfo;
-    public BodyValuesCalculator(UserInfo userInfo) { this.userInfo = userInfo; }
 
-    public BodyValuesCalculator() {}
-
-    // TODO: Doplnit metody pre vypocet podielu kosti, svalov a vody
+    private UserInfo userInfo;
 
     public void setBodyValues(BodyRecord bodyRecord) {
         bodyRecord.setBmi(getBMI(bodyRecord));
         bodyRecord.setFat(getBodyFatPercentage(bodyRecord));
         bodyRecord.setLeanMass(getLeanMassPercentage(bodyRecord));
     }
+
     @SneakyThrows
     @NonNull
     public float getBMI(BodyRecord bodyRecord) {
-            if (bodyRecord.getWeight() < MIN_WEIGHT || bodyRecord.getWeight() > MAX_WEIGHT)
-                throw new IllegalArgumentException("Please enter another value for weight");
-            if (bodyRecord.getHeight() < MIN_HEIGHT || bodyRecord.getHeight() > MAX_HEIGHT)
-                throw new IllegalArgumentException("Please enter another value for height");
-            return (float) (bodyRecord.getWeight() / Math.pow(bodyRecord.getHeight() / 100, 2));
+        if (bodyRecord.getWeight() < MIN_WEIGHT || bodyRecord.getWeight() > MAX_WEIGHT)
+            throw new IllegalArgumentException("Hodnota váhy musí byť v rozmedzí " + MIN_WEIGHT + " - " + MAX_WEIGHT + " kg");
+        if (bodyRecord.getHeight() < MIN_HEIGHT || bodyRecord.getHeight() > MAX_HEIGHT)
+            throw new IllegalArgumentException("Hodnota výšky musí byť v rozmedzí " + MIN_HEIGHT + " - " + MAX_HEIGHT+ " cm");
+        return (float) (bodyRecord.getWeight() / Math.pow(bodyRecord.getHeight() / 100, 2));
     }
 
     /**
@@ -57,6 +54,7 @@ public class BodyValuesCalculator {
         return (float) (495 / (coeffs.get(0) - coeffs.get(1) * Math.log10(bodyRecord.getWaist() - bodyRecord.getNeck())
                 + coeffs.get(2) * Math.log10(bodyRecord.getHeight())) - 450);
     }
+
     @NonNull
     public float getLeanMassPercentage(BodyRecord bodyRecord) {
         return bodyRecord.getWeight() * (1 - getBodyFatPercentage(bodyRecord));
