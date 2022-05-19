@@ -6,17 +6,17 @@ import lombok.SneakyThrows;
 import sk.uniba.fmfi.model.BodyRecord;
 import sk.uniba.fmfi.model.UserInfo;
 
-import java.util.InputMismatchException;
+import java.util.Arrays;
 import java.util.List;
 
 @Data
 public class BodyValuesCalculator {
-    private static final float minWeight = 20f;
-    private static final float maxWeight = 200f;
-    private static final float minHeight = 120f;
-    private static final float maxHeight = 220f;
-    private static final List<Float> maleCoefficients = List.of(1.0324f, 0.19077f, 0.15456f);
-    private static final List<Float> femaleCoefficients = List.of(1.29579f, 0.35004f, 0.22100f);
+    private static final float MIN_WEIGHT = 20f;
+    private static final float MAX_WEIGHT = 200f;
+    private static final float MIN_HEIGHT = 120f;
+    private static final float MAX_HEIGHT = 220f;
+    private static final List<Float> maleCoefficients = Arrays.asList(1.0324f, 0.19077f, 0.15456f);
+    private static final List<Float> femaleCoefficients = Arrays.asList(1.29579f, 0.35004f, 0.22100f);
     UserInfo userInfo;
     public BodyValuesCalculator(UserInfo userInfo) { this.userInfo = userInfo; }
 
@@ -32,9 +32,9 @@ public class BodyValuesCalculator {
     @SneakyThrows
     @NonNull
     public float getBMI(BodyRecord bodyRecord) {
-            if (bodyRecord.getWeight() < minWeight || bodyRecord.getWeight() > maxWeight)
+            if (bodyRecord.getWeight() < MIN_WEIGHT || bodyRecord.getWeight() > MAX_WEIGHT)
                 throw new IllegalArgumentException("Please enter another value for weight");
-            if (bodyRecord.getHeight() < minHeight || bodyRecord.getHeight() > maxHeight)
+            if (bodyRecord.getHeight() < MIN_HEIGHT || bodyRecord.getHeight() > MAX_HEIGHT)
                 throw new IllegalArgumentException("Please enter another value for height");
             return (float) (bodyRecord.getWeight() / Math.pow(bodyRecord.getHeight() / 100, 2));
     }

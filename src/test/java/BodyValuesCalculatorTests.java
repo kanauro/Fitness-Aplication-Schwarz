@@ -11,9 +11,7 @@ import sk.uniba.fmfi.model.Database;
 import sk.uniba.fmfi.model.UserInfo;
 
 import java.util.Collections;
-import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 public class BodyValuesCalculatorTests {
