@@ -4,6 +4,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.TableView;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import sk.uniba.fmfi.model.UserInfo;
@@ -16,6 +17,7 @@ public class ShowGraphEventHandler implements EventHandler {
     private final UserInfo userInfo;
     LineChart<Number, Number> lineChart;
     private final XYChart.Series series;
+    TableView userInfoTableView;
 
     private final StatisticsDataController statisticsDataController = new StatisticsDataController();
 
@@ -26,5 +28,8 @@ public class ShowGraphEventHandler implements EventHandler {
         series.setName(chartTitle);
         series.getData().removeAll(series.getData());
         series.getData().addAll(statisticsDataController.getDataByType(this.type, this.userInfo));
+
+        userInfoTableView.getItems().clear();
+        userInfoTableView.getItems().add(statisticsDataController.getUserStatisticsByType(this.type, this.userInfo));
     }
 }
