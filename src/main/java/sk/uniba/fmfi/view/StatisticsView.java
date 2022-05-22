@@ -65,7 +65,7 @@ public class StatisticsView extends Stage {
         grid.add(showWeightGraphButton, 2, 1);
 
         Button showMuscleGraphButton = new Button("Svaly");
-        showMuscleGraphButton.setOnAction(new ShowGraphEventHandler("muscle", "Svaly [%]", database.getUserInfo(), lineChart, series, userInfoTableView));
+        showMuscleGraphButton.setOnAction(new ShowGraphEventHandler("leanMass", "Svaly [%]", database.getUserInfo(), lineChart, series, userInfoTableView));
         grid.add(showMuscleGraphButton, 3, 1);
 
         Button showHipGraphButton = new Button("Boky");

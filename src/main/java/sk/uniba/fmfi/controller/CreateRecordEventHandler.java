@@ -24,11 +24,11 @@ public class CreateRecordEventHandler implements EventHandler {
     private final TextField waistField;
     private final TextField hipField;
 
-    private final BodyValuesCalculator bodyValuesCalculator = new BodyValuesCalculator();
-
     @SneakyThrows
     @Override
     public void handle(Event event) {
+
+        BodyValuesCalculator bodyValuesCalculator = new BodyValuesCalculator(database.getUserInfo());
 
         try {
             database.getUserInfo().setLatestHeight(Float.parseFloat(heightField.getText()));
@@ -54,6 +54,8 @@ public class CreateRecordEventHandler implements EventHandler {
             stage.close();
         } catch (NumberFormatException e) {
             new ExceptionDialog(new IllegalStateException("Nesprávne zadané údaje. Všetky polia musia býť vyplnené."));
+        } catch (IllegalArgumentException e) {
+            new ExceptionDialog(new IllegalStateException(e.getMessage()));
         } catch (IllegalStateException e) {
             new ExceptionDialog(e);
         }
