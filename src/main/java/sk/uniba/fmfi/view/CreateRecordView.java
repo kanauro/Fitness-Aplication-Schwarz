@@ -27,17 +27,17 @@ public class CreateRecordView extends Stage {
         grid.setVgap(10);
         grid.setPadding(new Insets(30, 30, 30, 30));
 
-        Label weightLabel = new Label("Váha:");
+        Label weightLabel = new Label("Váha (kg):");
         grid.add(weightLabel, 0, 1);
-        Label heightLabel = new Label("Výška:");
+        Label heightLabel = new Label("Výška (cm):");
         grid.add(heightLabel, 0, 2);
-        Label armLabel = new Label("Obvod bicepsu:");
+        Label armLabel = new Label("Obvod bicepsu (cm):");
         grid.add(armLabel, 0, 3);
-        Label neckLabel = new Label("Obvod krku:");
+        Label neckLabel = new Label("Obvod krku (cm):");
         grid.add(neckLabel, 0, 4);
-        Label waistLabel = new Label("Obvod pásu:");
+        Label waistLabel = new Label("Obvod pásu (cm):");
         grid.add(waistLabel, 0, 5);
-        Label hipLabel = new Label("Boky:");
+        Label hipLabel = new Label("Obvod bokov (cm):");
         grid.add(hipLabel, 0, 6);
 
         TextField weightField = new TextField();
