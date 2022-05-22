@@ -15,6 +15,7 @@ public class BodyValuesCalculator {
     private static final float MAX_WEIGHT = 200f;
     private static final float MIN_HEIGHT = 120f;
     private static final float MAX_HEIGHT = 220f;
+    private static final float WATER_VOLUME = 0.55f;
     private static final List<Float> maleCoefficients = Arrays.asList(1.0324f, 0.19077f, 0.15456f);
     private static final List<Float> femaleCoefficients = Arrays.asList(1.29579f, 0.35004f, 0.22100f);
 
@@ -47,17 +48,24 @@ public class BodyValuesCalculator {
     public float getBodyFatPercentage(BodyRecord bodyRecord) {
         List<Float> coeffs;
         String gender = userInfo.getGender();
-        if (gender == null) throw new NullPointerException("Gender is not set");
-        if (gender.equals(UserInfo.MALE)) coeffs = maleCoefficients;
-        else if (gender.equals(UserInfo.FEMALE)) coeffs = femaleCoefficients;
-        else throw new IllegalArgumentException("User info contains unknown gender");
+        if (gender == null)
+            throw new NullPointerException("Gender is not set");
+
+        if (gender.equals(UserInfo.MALE))
+            coeffs = maleCoefficients;
+        else if (gender.equals(UserInfo.FEMALE))
+            coeffs = femaleCoefficients;
+        else
+            throw new IllegalArgumentException("User info contains unknown gender");
+
         return (float) (495 / (coeffs.get(0) - coeffs.get(1) * Math.log10(bodyRecord.getWaist() - bodyRecord.getNeck())
                 + coeffs.get(2) * Math.log10(bodyRecord.getHeight())) - 450);
     }
 
     @NonNull
     public float getLeanMassPercentage(BodyRecord bodyRecord) {
-        return bodyRecord.getWeight() * (1 - getBodyFatPercentage(bodyRecord));
+        float fatMass = (getBodyFatPercentage(bodyRecord) / 100) * bodyRecord.getWeight();
+        return bodyRecord.getWeight() - (WATER_VOLUME * bodyRecord.getWeight()) - fatMass;
     }
 
 }
