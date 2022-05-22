@@ -54,22 +54,22 @@ public class StatisticsView extends Stage {
         grid.add(lineChart, 1,2,4,2);
         XYChart.Series series = new XYChart.Series<>();
         lineChart.getData().add(series);
-        this.addEventHandler(WindowEvent.WINDOW_SHOWN, new ShowGraphEventHandler("fat", "Telesný tuk", database.getUserInfo(), lineChart, series, userInfoTableView));
+        this.addEventHandler(WindowEvent.WINDOW_SHOWN, new ShowGraphEventHandler("fat", "Telesný tuk [%]", database.getUserInfo(), lineChart, series, userInfoTableView));
 
         Button showFatGraphButton = new Button("Tuk");
-        showFatGraphButton.setOnAction(new ShowGraphEventHandler("fat", "Telesný tuk", database.getUserInfo(), lineChart, series, userInfoTableView));
+        showFatGraphButton.setOnAction(new ShowGraphEventHandler("fat", "Telesný tuk [%]", database.getUserInfo(), lineChart, series, userInfoTableView));
         grid.add(showFatGraphButton, 1, 1);
 
         Button showWeightGraphButton = new Button("Váha");
-        showWeightGraphButton.setOnAction(new ShowGraphEventHandler("weight", "Váha", database.getUserInfo(), lineChart, series, userInfoTableView));
+        showWeightGraphButton.setOnAction(new ShowGraphEventHandler("weight", "Váha [kg]", database.getUserInfo(), lineChart, series, userInfoTableView));
         grid.add(showWeightGraphButton, 2, 1);
 
         Button showMuscleGraphButton = new Button("Svaly");
-        showMuscleGraphButton.setOnAction(new ShowGraphEventHandler("muscle", "Svaly", database.getUserInfo(), lineChart, series, userInfoTableView));
+        showMuscleGraphButton.setOnAction(new ShowGraphEventHandler("muscle", "Svaly [%]", database.getUserInfo(), lineChart, series, userInfoTableView));
         grid.add(showMuscleGraphButton, 3, 1);
 
         Button showHipGraphButton = new Button("Boky");
-        showHipGraphButton.setOnAction(new ShowGraphEventHandler("hip", "Boky", database.getUserInfo(), lineChart, series, userInfoTableView));
+        showHipGraphButton.setOnAction(new ShowGraphEventHandler("hip", "Boky [cm]", database.getUserInfo(), lineChart, series, userInfoTableView));
         grid.add(showHipGraphButton, 4, 1);
 
         userInfoTableView.setMaxHeight(50);
